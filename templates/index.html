@@ -70,6 +70,27 @@
       border-radius: 5px;
       box-shadow: 0 0 6px #222;
       position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInTask 0.5s forwards;
+    }
+    @keyframes fadeInTask {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .task.removed {
+      animation: fadeOutTask 0.4s forwards;
+    }
+    @keyframes fadeOutTask {
+      to {
+        opacity: 0;
+        transform: translateX(50px);
+        height: 0;
+        margin: 0;
+        padding: 0;
+      }
     }
     .task h3 {
       margin: 0;
@@ -141,12 +162,31 @@
     a[style*="background-color: #198754"] {
       background-color: #388e3c !important;
     }
+    /* Mobil uyum */
     @media (max-width: 600px) {
       .container {
         padding: 0.2rem;
+        max-width: 100vw;
       }
-      form {
+      form, #calendar {
         padding: 0.5rem;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .task {
+        padding: 0.5rem;
+        font-size: 0.95rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      .btn-reset {
+        font-size: 0.95rem;
+        padding: 0.4rem;
+      }
+      input, textarea, button {
+        font-size: 0.95rem;
+        padding: 0.4rem;
       }
     }
   </style>
@@ -241,6 +281,18 @@
       });
 
       calendar.render();
+    });
+
+    // Görev silme animasyonu
+    document.querySelectorAll('.delete-form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const taskDiv = this.closest('.task');
+        taskDiv.classList.add('removed');
+        setTimeout(() => {
+          this.submit();
+        }, 350);
+      });
     });
 
     function resetFilter() {
