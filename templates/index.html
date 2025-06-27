@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Görev Takip Sistemi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FullCalendar & Locale -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.global.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <meta name="theme-color" content="#4caf50">
+
+
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f2f2;
+      margin: 0; padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    form {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      margin-bottom: 1.5rem;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.4rem 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+    .task {
+      background-color: #fff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #4caf50;
+      border-radius: 5px;
+      box-shadow: 0 0 6px #ddd;
+      position: relative;
+    }
+    .task h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .task p {
+      margin: 0.2rem 0;
+      color: #666;
+    }
+    .deadline {
+      font-size: 0.9rem;
+      color: #888;
+    }
+    .delete-form {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .delete-form button {
+      width: auto;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .delete-form button:hover {
+      background-color: #c62828;
+    }
+    #calendar {
+      background: #fff;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      max-width: 700px;
+      margin: auto;
+    }
+    .badge {
+      background-color: #4caf50;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      z-index: 1;
+    }
+    .btn-reset {
+      background-color: #0288d1;
+      color: white;
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .btn-reset:hover {
+      background-color: #0277bd;
+    }
+    .fc-daygrid-day.selected-day {
+      background-color: #b2dfdb !important;
+      transition: background 0.2s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📋 Görev Takibi</h1>
+
+    <!-- Takvim -->
+    <div id="calendar"></div>
+    <button class="btn-reset" onclick="resetFilter()">📂 Tüm Görevleri Göster</button>
+
+    <!-- Görev Ekle Formu -->
+    <form action="/add" method="post">
+      <input type="text" name="title" placeholder="Görev Başlığı" required>
+      <textarea name="desc" placeholder="Görev Açıklaması" rows="2" required></textarea>
+      <input type="datetime-local" name="deadline" required>
+      <button type="submit">➕ Görev Ekle</button>
+    </form>
+   <!-- Dilekçe Oluştur Butonu -->
+<div style="text-align: center; margin-bottom: 1rem;">
+  <a href="{{ url_for('dilekce_olustur') }}"
+     style="display: inline-block;
+            background-color: #198754;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;">
+    📄 Dilekçe Oluştur
+  </a>
+</div>
+
+
+    <!-- Görev Listesi -->
+    <div id="task-list">
+      {% for task in tasks %}
+      <div class="task" data-date="{{ task.deadline[:10] }}">
+        <form class="delete-form" action="/delete/{{ loop.index0 }}" method="post">
+          <button type="submit">🗑️</button>
+        </form>
+        <h3>{{ task.title }}</h3>
+        <p>{{ task.desc }}</p>
+        <p class="deadline">Son Tarih: {{ task.deadline }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tasks = Array.from(document.querySelectorAll('.task'));
+      const eventCounts = {};
+      tasks.forEach(task => {
+        const date = task.dataset.date;
+        eventCounts[date] = (eventCounts[date] || 0) + 1;
+      });
+
+      const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        locale: 'tr',
+        firstDay: 1,
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        headerToolbar: {
+          left: '',
+          center: 'title',
+          right: 'prev,next'
+        },
+        events: Object.keys(eventCounts).map(date => ({ start: date })),
+        dayCellDidMount: function(info) {
+          const dateObj = info.date;
+          const dateStr = dateObj.getFullYear() + '-' + String(dateObj.getMonth()+1).padStart(2,'0') + '-' + String(dateObj.getDate()).padStart(2,'0');
+          const count = eventCounts[dateStr] || 0;
+          if (count > 0) {
+            const badge = document.createElement('div');
+            badge.className = 'badge';
+            badge.innerText = count;
+            info.el.style.position = 'relative';
+            info.el.appendChild(badge);
+          }
+        },
+        dateClick: function(info) {
+          // Önce tüm günlerden seçili sınıfı kaldır
+          document.querySelectorAll('.fc-daygrid-day.selected-day').forEach(el => el.classList.remove('selected-day'));
+          // Tıklanan güne seçili sınıfı ekle
+          info.dayEl.classList.add('selected-day');
+          const clicked = info.dateStr;
+          tasks.forEach(task => {
+            task.style.display = (task.dataset.date === clicked) ? 'block' : 'none';
+          });
+        }
+      });
+
+      calendar.render();
+    });
+
+    function resetFilter() {
+      document.querySelectorAll('.task').forEach(el => el.style.display = 'block');
+    }
+  </script>
+</body>
+</html>
+
