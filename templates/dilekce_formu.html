@@ -101,7 +101,8 @@
         <input name="Sigorta Şirketi" placeholder="Sigorta Şirketi" {% if not temizle %}value="{{ request.form['Sigorta Şirketi'] }}"{% endif %} required>
         <input name="Ad Soyad" placeholder="Ad Soyad" {% if not temizle %}value="{{ request.form['Ad Soyad'] }}"{% endif %} required>
         <input name="TC No" placeholder="TC No" {% if not temizle %}value="{{ request.form['TC No'] }}"{% endif %} required>
-        <input name="Kaza Tarihi" type="date" {% if not temizle %}value="{{ request.form['Kaza Tarihi'] }}"{% endif %} required>
+        <input name="Kaza Tarihi" type="date" placeholder="Kaza Tarihi" {% if not temizle %}value="{{ request.form['Kaza Tarihi'] }}"{% endif %} required onfocus="this.showPicker && this.showPicker()" onmouseover="this.showPicker && this.showPicker()">
+        <span style="color:#aaa; font-size:13px; margin-top:-8px; margin-bottom:8px; display:block;">Kaza Tarihi</span>
         <input name="Müvekkil Plaka" placeholder="Müvekkil Plaka" {% if not temizle %}value="{{ request.form['Müvekkil Plaka'] }}"{% endif %} required>
         <input name="Karşı Plaka" placeholder="Karşı Araç Plakası" {% if not temizle %}value="{{ request.form['Karşı Plaka'] }}"{% endif %} required>
         <input name="Araç Modeli" placeholder="Araç Modeli" {% if not temizle %}value="{{ request.form['Araç Modeli'] }}"{% endif %} required>

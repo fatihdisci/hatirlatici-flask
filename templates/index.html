@@ -16,9 +16,9 @@
 
   <style>
     body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
+      background-color: #181a20;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
       margin: 0; padding: 0;
     }
     .container {
@@ -28,47 +28,59 @@
     }
     h1 {
       text-align: center;
-      color: #90ee90;
+      color: #7fffd4;
       font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #222a;
     }
     form {
-      background-color: #1e1e1e;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #222;
+      background-color: #23272f;
+      padding: 1.2rem;
+      border-radius: 14px;
+      box-shadow: 0 2px 24px #000a;
       margin-bottom: 1.5rem;
+      border: 1px solid #23272f;
     }
     input, textarea, button {
       width: 100%;
-      padding: 0.6rem;
+      padding: 0.7rem;
       margin: 0.4rem 0;
-      border: 1px solid #333;
-      border-radius: 5px;
+      border: 1px solid #23272f;
+      border-radius: 7px;
       font-size: 1rem;
-      background-color: #2a2a2a;
-      color: #fff;
+      background-color: #23272f;
+      color: #e0e0e0;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border: 1.5px solid #7fffd4;
+      box-shadow: 0 0 0 2px #7fffd455;
     }
     textarea {
-      background-color: #2a2a2a;
-      color: #fff;
+      background-color: #23272f;
+      color: #e0e0e0;
     }
     button {
-      background-color: #4caf50;
-      color: white;
+      background: linear-gradient(90deg, #7fffd4 0%, #388e3c 100%);
+      color: #181a20;
       font-weight: bold;
       cursor: pointer;
       border: none;
+      box-shadow: 0 2px 8px #0004;
+      transition: background 0.2s, color 0.2s;
     }
     button:hover {
-      background-color: #45a049;
+      background: linear-gradient(90deg, #388e3c 0%, #7fffd4 100%);
+      color: #fff;
     }
     .task {
-      background-color: #232323;
+      background-color: #23272f;
       padding: 1rem;
       margin-bottom: 1rem;
-      border-left: 5px solid #4caf50;
-      border-radius: 5px;
-      box-shadow: 0 0 6px #222;
+      border-left: 5px solid #7fffd4;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px #0006;
       position: relative;
       opacity: 0;
       transform: translateY(20px);
@@ -95,7 +107,8 @@
     .task h3 {
       margin: 0;
       font-size: 1.1rem;
-      color: #b2ffb2;
+      color: #7fffd4;
+      font-weight: 600;
     }
     .task p {
       margin: 0.2rem 0;
@@ -114,26 +127,28 @@
       width: auto;
       padding: 0.4rem 0.6rem;
       font-size: 0.9rem;
-      background-color: #e53935;
-      color: white;
+      background: linear-gradient(90deg, #e53935 0%, #b71c1c 100%);
+      color: #fff;
       border: none;
       border-radius: 5px;
+      box-shadow: 0 2px 8px #0004;
     }
     .delete-form button:hover {
-      background-color: #c62828;
+      background: linear-gradient(90deg, #b71c1c 0%, #e53935 100%);
     }
     #calendar {
-      background: #232323;
+      background: #23272f;
       padding: 10px;
       margin-bottom: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #222;
+      border-radius: 14px;
+      box-shadow: 0 2px 24px #000a;
       max-width: 700px;
       margin: auto;
+      border: 1px solid #23272f;
     }
     .badge {
-      background-color: #4caf50;
-      color: white;
+      background-color: #7fffd4;
+      color: #181a20;
       border-radius: 50%;
       padding: 2px 6px;
       font-size: 10px;
@@ -141,26 +156,50 @@
       top: 2px;
       left: 2px;
       z-index: 1;
+      font-weight: bold;
+      box-shadow: 0 1px 4px #0006;
     }
     .btn-reset {
-      background-color: #0288d1;
-      color: white;
+      background: linear-gradient(90deg, #0288d1 0%, #23272f 100%);
+      color: #fff;
       width: 100%;
       padding: 0.6rem;
       border: none;
-      border-radius: 5px;
+      border-radius: 7px;
       font-size: 1rem;
       margin-bottom: 1rem;
+      box-shadow: 0 2px 8px #0004;
+      transition: background 0.2s;
     }
     .btn-reset:hover {
-      background-color: #0277bd;
+      background: linear-gradient(90deg, #23272f 0%, #0288d1 100%);
     }
     .fc-daygrid-day.selected-day {
-      background-color: #388e3c !important;
+      background-color: #222e2e !important;
       transition: background 0.2s;
     }
     a[style*="background-color: #198754"] {
-      background-color: #388e3c !important;
+      background: linear-gradient(90deg, #388e3c 0%, #7fffd4 100%) !important;
+      color: #181a20 !important;
+    }
+    /* Takvim gün isimleri ve başlıkları için karanlık mod düzeltmesi */
+    .fc-theme-standard .fc-scrollgrid, .fc-theme-standard th, .fc-theme-standard .fc-col-header-cell {
+      background-color: #23272f !important;
+      color: #7fffd4 !important;
+      border-color: #23272f !important;
+    }
+    .fc .fc-toolbar-title {
+      color: #7fffd4 !important;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #222a;
+    }
+    .fc-daygrid-day-number {
+      color: #e0e0e0 !important;
+      font-weight: 600;
+    }
+    .fc-daygrid-day.fc-day-today {
+      background-color: #263238 !important;
+      border-radius: 8px;
     }
     /* Mobil uyum */
     @media (max-width: 600px) {
