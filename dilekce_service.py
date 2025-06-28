@@ -39,11 +39,13 @@ BAŞVURAN VEKİLİ
 Av. Fatih DİŞÇİ
 
 EK: 
-1- Kaza Tespit Tutanağı 2- Araç Ruhsat Fotokopisi 3- Eksper Raporu 4- Kaza Fotoğrafları 5- Vekâletname
+1- Kaza Tespit Tutanağı 2- Ruhsat 3- Eksper Raporu 4- Kaza Fotoğrafları 5- Vekâletname
 
-VEKİL HESAP BİLGİLERİ: Türk Ekonomi Bankası TR45 0003 2000 0000 0106 9135 78  Hesap Sahibi: Fatih DİŞÇİ
+VEKİL HESAP BİLGİLERİ: 
+Türk Ekonomi Bankası TR45 0003 2000 0000 0106 9135 78  Hesap Sahibi: Fatih DİŞÇİ
 
-İLETİŞİM BİLGİLERİ: fatihdisci@outlook.com  (0 507) 724 77 35"""
+İLETİŞİM BİLGİLERİ: 
+fatihdisci@outlook.com  (0 507) 724 77 35"""
 
 
 def create_insurance_docx(data: dict, output_path: str):
