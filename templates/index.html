@@ -40,51 +40,52 @@
       box-shadow: 0 2px 24px #000a;
       margin-bottom: 1.5rem;
       border: 1px solid #23272f;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      align-items: stretch;
     }
-    input, textarea, button {
+    input, textarea {
       width: 100%;
-      padding: 0.7rem;
-      margin: 0.4rem 0;
-      border: 1px solid #23272f;
+      min-width: 0;
+      box-sizing: border-box;
+      margin: 0;
+      font-size: 1.05rem;
       border-radius: 7px;
-      font-size: 1rem;
+      padding: 0.7rem 1rem;
       background-color: #23272f;
       color: #e0e0e0;
+      border: 1px solid #23272f;
       transition: border 0.2s, box-shadow 0.2s;
     }
-    input:focus, textarea:focus {
-      outline: none;
-      border: 1.5px solid #7fffd4;
-      box-shadow: 0 0 0 2px #7fffd455;
-    }
     textarea {
-      background-color: #23272f;
-      color: #e0e0e0;
+      resize: vertical;
+      min-height: 60px;
+      max-height: 200px;
     }
-    button {
-      background: linear-gradient(90deg, #7fffd4 0%, #388e3c 100%);
-      color: #181a20;
-      font-weight: bold;
-      cursor: pointer;
-      border: none;
-      box-shadow: 0 2px 8px #0004;
-      transition: background 0.2s, color 0.2s;
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 0.2rem;
+      align-self: flex-end;
     }
-    button:hover {
-      background: linear-gradient(90deg, #388e3c 0%, #7fffd4 100%);
-      color: #fff;
+    .btn-reset {
+      margin-bottom: 1.2rem;
+      width: 100%;
     }
     .task {
       background-color: #23272f;
       padding: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       border-left: 5px solid #7fffd4;
-      border-radius: 8px;
+      border-radius: 10px;
       box-shadow: 0 2px 12px #0006;
       position: relative;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInTask 0.5s forwards;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
     }
     @keyframes fadeInTask {
       to {
@@ -104,6 +105,10 @@
         padding: 0;
       }
     }
+    .task h3, .task p, .task .deadline {
+      margin: 0;
+      padding: 0;
+    }
     .task h3 {
       margin: 0;
       font-size: 1.1rem;
@@ -120,8 +125,8 @@
     }
     .delete-form {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
     }
     .delete-form button {
       width: auto;
@@ -213,8 +218,9 @@
         box-shadow: none;
       }
       .task {
-        padding: 0.5rem;
-        font-size: 0.95rem;
+        padding: 0.7rem 0.5rem;
+        border-radius: 7px;
+        gap: 0.2rem;
       }
       h1 {
         font-size: 1.2rem;
@@ -223,9 +229,9 @@
         font-size: 0.95rem;
         padding: 0.4rem;
       }
-      input, textarea, button {
-        font-size: 0.95rem;
-        padding: 0.4rem;
+      input, textarea {
+        font-size: 1rem;
+        padding: 0.5rem 0.7rem;
       }
     }
   </style>
