@@ -80,18 +80,24 @@ def schedule_task(task):
 # ——— Flask Routes ————————————————————————————————
 @app.route("/")
 def index():
-    return render_template("index.html", tasks=get_tasks())
+    selected = request.args.get("kategori")
+    tasks = get_tasks()
+    if selected and selected != "hepsi":
+        tasks = [t for t in tasks if t.get("category") == selected]
+    return render_template("index.html", tasks=tasks, selected=selected)
 
 @app.route("/add", methods=["POST"])
 def add_task():
     title    = request.form["title"].strip()
     desc     = request.form["desc"].strip()
     deadline = request.form["deadline"]      # "YYYY-MM-DDTHH:MM"
+    category = request.form["category"]
 
     new_task = {
         "title": title,
         "desc": desc,
         "deadline": deadline,
+        "category": category,
         "warned_1day": False,
         "warned_today": False
     }
