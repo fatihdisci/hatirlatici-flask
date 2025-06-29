@@ -82,7 +82,14 @@ def schedule_task(task):
 def index():
     selected = request.args.get("kategori")
     tasks = get_tasks()
-    if selected and selected != "hepsi":
+    if selected == "expired":
+        # Sadece günü geçenler
+        from pytz import timezone
+        from datetime import datetime
+        tz = timezone("Europe/Istanbul")
+        today = datetime.now(tz).date()
+        tasks = [t for t in tasks if tz.localize(datetime.strptime(t["deadline"], "%Y-%m-%dT%H:%M")).date() < today]
+    elif selected and selected != "hepsi":
         tasks = [t for t in tasks if t.get("category") == selected]
     return render_template("index.html", tasks=tasks, selected=selected)
 
