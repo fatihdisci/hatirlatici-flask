@@ -135,10 +135,13 @@ def checker_loop():
               <div style="max-width:520px;margin:30px auto 0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px #0002;padding:24px 18px 12px 18px;">
                 <h2 style="color:#23272f;font-size:1.1rem;margin:0 0 10px 0;">{header}: <span style="color:#4fc3f7;">{task['title']}</span></h2>
                 <div style="margin-bottom:10px;">{category_badge}</div>
-                <div style="background:#f6f8fa;border-radius:8px;padding:12px 10px 8px 10px;margin-bottom:14px;">
-                  <div style="color:#23272f;font-size:1rem;margin-bottom:6px;"><b>Açıklama:</b> {task['desc']}</div>
-                  <div style="color:#23272f;font-size:1rem;"><b>Kategori:</b> {category}</div>
-                  <div style="color:#23272f;font-size:1rem;"><b>Son Tarih:</b> {task['deadline'].replace('T',' ')}</div>
+                <table style="width:100%;border-collapse:collapse;margin-bottom:14px;">
+                  <tr style="background:#e3eafc;"><td style="padding:8px 6px;font-weight:600;width:120px;">Açıklama</td><td style="padding:8px 6px;">{task['desc']}</td></tr>
+                  <tr style="background:#f3f7fa;"><td style="padding:8px 6px;font-weight:600;">Kategori</td><td style="padding:8px 6px;">{category}</td></tr>
+                  <tr style="background:#e3eafc;"><td style="padding:8px 6px;font-weight:600;">Son Tarih</td><td style="padding:8px 6px;">{task['deadline'].replace('T',' ')}</td></tr>
+                </table>
+                <div style="margin-bottom:8px;text-align:center;">
+                  <img src="https://img.icons8.com/fluency/96/task-completed.png" width="64" height="64" alt="Görev Görseli" style="margin-bottom:8px;">
                 </div>
                 <div style="margin-bottom:8px;">{build_html(get_tasks())}</div>
                 <div style="border-top:1px solid #e0e0e0;margin-top:12px;padding-top:8px;font-size:0.93rem;color:#888;text-align:center;">
