@@ -137,6 +137,7 @@ def checker_loop():
                 <div style="margin-bottom:10px;">{category_badge}</div>
                 <div style="background:#f6f8fa;border-radius:8px;padding:12px 10px 8px 10px;margin-bottom:14px;">
                   <div style="color:#23272f;font-size:1rem;margin-bottom:6px;"><b>Açıklama:</b> {task['desc']}</div>
+                  <div style="color:#23272f;font-size:1rem;"><b>Kategori:</b> {category}</div>
                   <div style="color:#23272f;font-size:1rem;"><b>Son Tarih:</b> {task['deadline'].replace('T',' ')}</div>
                 </div>
                 <div style="margin-bottom:8px;">{build_html(get_tasks())}</div>
