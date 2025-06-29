@@ -117,6 +117,7 @@ def checker_loop():
 
         for header, task in to_mail:
             html = (f"<h2>{header}: {task['title']}</h2>"
+                    f"<p><b>Kategori:</b> {task.get('category','-').capitalize()}</p>"
                     f"<p>{task['desc']}</p>"
                     f"<p>Son Tarih: {task['deadline'].replace('T',' ')}</p><hr>"
                     f"{build_html(get_tasks())}")
