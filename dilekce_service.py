@@ -49,11 +49,6 @@ fatihdisci@outlook.com  (0 507) 724 77 35"""
 
 
 def create_insurance_docx(data: dict, output_path: str):
-    # Dosya adını güvenli hale getir (ekstra koruma)
-    from pathlib import Path
-    import re
-    safe_path = str(Path(output_path).parent / (re.sub(r'[^a-zA-Z0-9_]', '', Path(output_path).stem) + '.docx'))
-
     # Document ve font ayarı
     doc = Document()
     style = doc.styles['Normal']
@@ -115,6 +110,6 @@ def create_insurance_docx(data: dict, output_path: str):
             run = p.add_run(text)
 
     # Dosyayı kaydet
-    Path(safe_path).parent.mkdir(parents=True, exist_ok=True)
-    doc.save(safe_path)
-    return safe_path
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+    doc.save(output_path)
+    return output_path

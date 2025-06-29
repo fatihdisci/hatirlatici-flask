@@ -13,9 +13,12 @@ TASKS_FILE = "tasks.json"
 
 app = Flask(__name__, static_folder='static')
 
+<<<<<<< HEAD
 # tmp klasörü yoksa oluştur
 os.makedirs("tmp", exist_ok=True)
 
+=======
+>>>>>>> 03d16b82ad5d587617d3323ec93de589e1b4b9f5
 # ——— Türkiye Saat Dilimi ————————————————————————————
 TZ = timezone("Europe/Istanbul")
 
@@ -156,10 +159,14 @@ def dilekce_olustur():
                   'Bakiye Hasar (₺)','Toplam (₺)','email']
         data = { fld: request.form[fld] for fld in fields }
 
+<<<<<<< HEAD
         # Dosya adında Türkçe karakterleri ve özel karakterleri temizle
         import re
         safe_name = re.sub(r'[^a-zA-Z0-9_]', '', data['Ad Soyad'].replace(' ', '_'))
         output_file = f"tmp/{safe_name}_basvuru.docx"
+=======
+        output_file = f"tmp/{data['Ad Soyad'].replace(' ', '_')}_basvuru.docx"
+>>>>>>> 03d16b82ad5d587617d3323ec93de589e1b4b9f5
         create_insurance_docx(data, output_file)
 
         send_email(
