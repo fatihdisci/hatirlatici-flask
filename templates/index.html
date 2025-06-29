@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Görev Takip Sistemi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FullCalendar & Locale -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.global.min.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+  <meta name="theme-color" content="#4caf50">
+
+
+
+  <style>
+    body {
+      background-color: #181a20;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', 'Arial', sans-serif;
+      margin: 0; padding: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 1rem;
+    }
+    h1 {
+      text-align: center;
+      color: #7fffd4;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #222a;
+    }
+    form {
+      background-color: #23272f;
+      padding: 1.2rem;
+      border-radius: 14px;
+      box-shadow: 0 2px 24px #000a;
+      margin-bottom: 1.5rem;
+      border: 1px solid #23272f;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      align-items: stretch;
+    }
+    input, textarea {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      margin: 0;
+      font-size: 1.05rem;
+      border-radius: 7px;
+      padding: 0.7rem 1rem;
+      background-color: #23272f;
+      color: #e0e0e0;
+      border: 1.5px solid #49505a;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border: 1.5px solid #49505a;
+      box-shadow: none;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 200px;
+    }
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 0.2rem;
+      align-self: flex-end;
+    }
+    .btn-reset {
+      margin-bottom: 1.2rem;
+      width: 100%;
+    }
+    .task {
+      background-color: #23272f;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      border-left: 5px solid #7fffd4;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px #0006;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInTask 0.5s forwards;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    @keyframes fadeInTask {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .task.removed {
+      animation: fadeOutTask 0.4s forwards;
+    }
+    @keyframes fadeOutTask {
+      to {
+        opacity: 0;
+        transform: translateX(50px);
+        height: 0;
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .task h3, .task p, .task .deadline {
+      margin: 0;
+      padding: 0;
+    }
+    .task h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #7fffd4;
+      font-weight: 600;
+    }
+    .task p {
+      margin: 0.2rem 0;
+      color: #bdbdbd;
+    }
+    .deadline {
+      font-size: 0.9rem;
+      color: #90caf9;
+    }
+    .delete-form {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+    .delete-form button {
+      width: auto;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.9rem;
+      background: linear-gradient(90deg, #e53935 0%, #b71c1c 100%);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px #0004;
+    }
+    .delete-form button:hover {
+      background: linear-gradient(90deg, #b71c1c 0%, #e53935 100%);
+    }
+    #calendar {
+      background: #23272f;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border-radius: 14px;
+      box-shadow: 0 2px 24px #000a;
+      max-width: 700px;
+      margin: auto;
+      border: 1px solid #23272f;
+    }
+    .badge {
+      background-color: #7fffd4;
+      color: #181a20;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 10px;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      z-index: 1;
+      font-weight: bold;
+      box-shadow: 0 1px 4px #0006;
+    }
+    .btn-reset {
+      background: linear-gradient(90deg, #0288d1 0%, #23272f 100%);
+      color: #fff;
+      width: 100%;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 7px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px #0004;
+      transition: background 0.2s;
+    }
+    .btn-reset:hover {
+      background: linear-gradient(90deg, #23272f 0%, #0288d1 100%);
+    }
+    .fc-daygrid-day.selected-day {
+      background-color: #222e2e !important;
+      transition: background 0.2s;
+    }
+    a[style*="background-color: #198754"] {
+      background: linear-gradient(90deg, #388e3c 0%, #7fffd4 100%) !important;
+      color: #181a20 !important;
+    }
+    /* Takvim gün isimleri ve başlıkları için karanlık mod düzeltmesi */
+    .fc-theme-standard .fc-scrollgrid, .fc-theme-standard th, .fc-theme-standard .fc-col-header-cell {
+      background-color: #23272f !important;
+      color: #7fffd4 !important;
+      border-color: #23272f !important;
+    }
+    .fc .fc-toolbar-title {
+      color: #7fffd4 !important;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #222a;
+    }
+    .fc-daygrid-day-number {
+      color: #e0e0e0 !important;
+      font-weight: 600;
+    }
+    .fc-daygrid-day.fc-day-today {
+      background-color: #263238 !important;
+      border-radius: 8px;
+    }
+    /* Mobil uyum */
+    @media (max-width: 600px) {
+      .container {
+        padding: 0.2rem;
+        max-width: 100vw;
+      }
+      form, #calendar {
+        padding: 0.5rem;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .task {
+        padding: 0.7rem 0.5rem;
+        border-radius: 7px;
+        gap: 0.2rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+      }
+      .btn-reset {
+        font-size: 0.95rem;
+        padding: 0.4rem;
+      }
+      input, textarea {
+        font-size: 1rem;
+        padding: 0.5rem 0.7rem;
+      }
+    }
+    .active-cat {
+      background: #7fffd4 !important;
+      color: #181a20 !important;
+    }
+    .category-badge {
+      display: inline-block;
+      font-size: 0.95rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      margin-right: 4px;
+      font-weight: 600;
+    }
+    .category-sigorta {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .category-hukuk {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    .category-ceza {
+      background: #ffebee;
+      color: #c62828;
+    }
+    .category-icra {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+    .category-diğer {
+      background: #fffde7;
+      color: #fbc02d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📋 Görev Takibi</h1>
+
+    <!-- Takvim -->
+    <div id="calendar"></div>
+    <button class="btn-reset" onclick="resetFilter()">📂 Tüm Görevleri Göster</button>
+
+    <!-- Görev Ekle Formu -->
+    <form action="/add" method="post">
+      <input type="text" name="title" placeholder="Görev Başlığı" required>
+      <textarea name="desc" placeholder="Görev Açıklaması" rows="2" required></textarea>
+      <input type="datetime-local" name="deadline" required>
+      <select name="category" required style="width:100%;padding:0.7rem 1rem;border-radius:7px;background:#23272f;color:#e0e0e0;border:1.5px solid #49505a;font-size:1.05rem;">
+        <option value="" disabled selected>Kategori Seçiniz</option>
+        <option value="sigorta">Sigorta</option>
+        <option value="hukuk">Hukuk</option>
+        <option value="ceza">Ceza</option>
+        <option value="icra">İcra</option>
+        <option value="diğer">Diğer</option>
+      </select>
+      <button type="submit">➕ Görev Ekle</button>
+    </form>
+    <!-- Kategori Filtreleme Butonları -->
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.2rem;">
+      <a href="/" class="btn-reset {% if not selected or selected=='hepsi' %}active-cat{% endif %}" style="width:auto;">Tümü</a>
+      <a href="/?kategori=sigorta" class="btn-reset {% if selected=='sigorta' %}active-cat{% endif %}" style="width:auto;">Sigorta</a>
+      <a href="/?kategori=hukuk" class="btn-reset {% if selected=='hukuk' %}active-cat{% endif %}" style="width:auto;">Hukuk</a>
+      <a href="/?kategori=ceza" class="btn-reset {% if selected=='ceza' %}active-cat{% endif %}" style="width:auto;">Ceza</a>
+      <a href="/?kategori=icra" class="btn-reset {% if selected=='icra' %}active-cat{% endif %}" style="width:auto;">İcra</a>
+      <a href="/?kategori=diğer" class="btn-reset {% if selected=='diğer' %}active-cat{% endif %}" style="width:auto;">Diğer</a>
+      <a href="/?kategori=expired" class="btn-reset {% if selected=='expired' %}active-cat{% endif %}" style="width:auto;">Günü Geçenler</a>
+    </div>
+
+
+    <!-- Görev Listesi -->
+    <div id="task-list">
+      {% for task in tasks %}
+      <div class="task" data-date="{{ task.deadline[:10] }}">
+        <form class="delete-form" action="/delete/{{ loop.index0 }}" method="post">
+          <button type="submit">🗑️</button>
+        </form>
+        <h3>{{ task.title }}</h3>
+        <span class="category-badge category-{{ task.category }}">{{ task.category|capitalize }}</span>
+        <p>{{ task.desc }}</p>
+        <p class="deadline">Son Tarih: {{ task.deadline }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Dilekçe Oluştur Butonu (En Alta Alındı) -->
+    <div style="text-align: center; margin: 2rem 0 0 0;">
+      <a href="{{ url_for('dilekce_olustur') }}"
+         style="display: inline-block;
+                background-color: #198754;
+                color: white;
+                padding: 10px 16px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: bold;">
+        📄 Dilekçe Oluştur
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tasks = Array.from(document.querySelectorAll('.task'));
+      const eventCounts = {};
+      tasks.forEach(task => {
+        const date = task.dataset.date;
+        eventCounts[date] = (eventCounts[date] || 0) + 1;
+      });
+
+      const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+        locale: 'tr',
+        firstDay: 1,
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        headerToolbar: {
+          left: '',
+          center: 'title',
+          right: 'prev,next'
+        },
+        events: Object.keys(eventCounts).map(date => ({ start: date })),
+        dayCellDidMount: function(info) {
+          const dateObj = info.date;
+          const dateStr = dateObj.getFullYear() + '-' + String(dateObj.getMonth()+1).padStart(2,'0') + '-' + String(dateObj.getDate()).padStart(2,'0');
+          const count = eventCounts[dateStr] || 0;
+          if (count > 0) {
+            const badge = document.createElement('div');
+            badge.className = 'badge';
+            badge.innerText = count;
+            info.el.style.position = 'relative';
+            info.el.appendChild(badge);
+          }
+        },
+        dateClick: function(info) {
+          // Önce tüm günlerden seçili sınıfı kaldır
+          document.querySelectorAll('.fc-daygrid-day.selected-day').forEach(el => el.classList.remove('selected-day'));
+          // Tıklanan güne seçili sınıfı ekle
+          info.dayEl.classList.add('selected-day');
+          const clicked = info.dateStr;
+          tasks.forEach(task => {
+            task.style.display = (task.dataset.date === clicked) ? 'block' : 'none';
+          });
+        }
+      });
+
+      calendar.render();
+    });
+
+    // Görev silme animasyonu
+    document.querySelectorAll('.delete-form').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const taskDiv = this.closest('.task');
+        taskDiv.classList.add('removed');
+        setTimeout(() => {
+          this.submit();
+        }, 350);
+      });
+    });
+
+    function resetFilter() {
+      document.querySelectorAll('.task').forEach(el => el.style.display = 'block');
+    }
+  </script>
+</body>
+</html>
+

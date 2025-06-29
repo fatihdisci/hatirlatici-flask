@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dilekçe Oluştur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        form {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 900px;
+            margin: auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        input, button {
+            width: 48%;
+            margin: 10px 0;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input {
+            background-color: #2a2a2a;
+            color: #ffffff;
+        }
+
+        input[type="date"] {
+            color-scheme: dark;
+        }
+
+        button[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background-color: #555;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        a.button:hover {
+            background-color: #777;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .mesaj {
+            text-align: center;
+            background-color: #2e7d32;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px auto;
+            color: white;
+            max-width: 900px;
+        }
+
+        @media (max-width: 600px) {
+            input, button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    {% if mesaj %}
+    <div class="mesaj">{{ mesaj }}</div>
+    {% endif %}
+
+    <form method="post">
+        <input name="Sigorta Şirketi" placeholder="Sigorta Şirketi" {% if not temizle %}value="{{ request.form['Sigorta Şirketi'] }}"{% endif %} required>
+        <input name="Ad Soyad" placeholder="Ad Soyad" {% if not temizle %}value="{{ request.form['Ad Soyad'] }}"{% endif %} required>
+        <input name="TC No" placeholder="TC No" {% if not temizle %}value="{{ request.form['TC No'] }}"{% endif %} required>
+        <input name="Kaza Tarihi" placeholder="Kaza Tarihi" {% if not temizle %}value="{{ request.form['Kaza Tarihi'] }}"{% endif %} required>
+        <input name="Müvekkil Plaka" placeholder="Müvekkil Plaka" {% if not temizle %}value="{{ request.form['Müvekkil Plaka'] }}"{% endif %} required>
+        <input name="Karşı Plaka" placeholder="Karşı Araç Plakası" {% if not temizle %}value="{{ request.form['Karşı Plaka'] }}"{% endif %} required>
+        <input name="Araç Modeli" placeholder="Araç Modeli" {% if not temizle %}value="{{ request.form['Araç Modeli'] }}"{% endif %} required>
+        <input name="Değer Kaybı (₺)" placeholder="Değer Kaybı" {% if not temizle %}value="{{ request.form['Değer Kaybı (₺)'] }}"{% endif %} required>
+        <input name="Bakiye Hasar (₺)" placeholder="Bakiye Hasar" {% if not temizle %}value="{{ request.form['Bakiye Hasar (₺)'] }}"{% endif %} required>
+        <input name="Toplam (₺)" placeholder="Toplam Tutar" {% if not temizle %}value="{{ request.form['Toplam (₺)'] }}"{% endif %} required>
+        <input name="email" placeholder="E-Posta Adresi" type="email" {% if not temizle %}value="{{ request.form['email'] }}"{% endif %} required>
+        <button type="submit" class="full-width">Dilekçeyi Oluştur ve Gönder</button>
+        <a href="/" class="button full-width">Ana Sayfaya Dön</a>
+    </form>
+
+</body>
+</html>
