@@ -128,25 +128,20 @@ def checker_loop():
             }
             badge_color = category_colors.get(category, '#b0bec5')
             category_badge = (f'<span style="display:inline-block;padding:2px 14px;border-radius:14px;'
-                              f'background:{badge_color};color:#222;font-weight:600;font-size:14px;letter-spacing:0.5px;box-shadow:0 1px 4px #0002;">'
+                              f'background:{badge_color};color:#222;font-weight:600;font-size:14px;letter-spacing:0.5px;">'
                               f'{category}</span>')
             html = f'''
-            <div style="background:#23272f;padding:0;margin:0;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;">
-              <div style="max-width:480px;margin:40px auto 0 auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px #0003;padding:32px 28px 18px 28px;">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-                  <img src="https://img.icons8.com/ios-filled/50/4fc3f7/task.png" width="38" height="38" style="border-radius:8px;box-shadow:0 1px 4px #0001;" alt="Görev Takip">
-                  <span style="font-size:1.5rem;font-weight:700;color:#23272f;letter-spacing:0.5px;">Görev Hatırlatma</span>
+            <div style="background:#f6f8fa;padding:0;margin:0;font-family:Segoe UI,Arial,sans-serif;">
+              <div style="max-width:520px;margin:30px auto 0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px #0002;padding:24px 18px 12px 18px;">
+                <h2 style="color:#23272f;font-size:1.1rem;margin:0 0 10px 0;">{header}: <span style="color:#4fc3f7;">{task['title']}</span></h2>
+                <div style="margin-bottom:10px;">{category_badge}</div>
+                <div style="background:#f6f8fa;border-radius:8px;padding:12px 10px 8px 10px;margin-bottom:14px;">
+                  <div style="color:#23272f;font-size:1rem;margin-bottom:6px;"><b>Açıklama:</b> {task['desc']}</div>
+                  <div style="color:#23272f;font-size:1rem;"><b>Son Tarih:</b> {task['deadline'].replace('T',' ')}</div>
                 </div>
-                <h2 style="color:#23272f;font-size:1.2rem;margin:0 0 10px 0;">{header}: <span style="color:#4fc3f7;">{task['title']}</span></h2>
-                <div style="margin-bottom:12px;">{category_badge}</div>
-                <div style="background:#f6f8fa;border-radius:10px;padding:16px 14px 10px 14px;margin-bottom:18px;box-shadow:0 1px 4px #0001;">
-                  <div style="color:#23272f;font-size:1.05rem;margin-bottom:8px;"><b>Açıklama:</b> {task['desc']}</div>
-                  <div style="color:#23272f;font-size:1.05rem;"><b>Son Tarih:</b> {task['deadline'].replace('T',' ')}</div>
-                </div>
-                <div style="margin-bottom:10px;">{build_html(get_tasks())}</div>
-                <div style="border-top:1px solid #e0e0e0;margin-top:18px;padding-top:10px;font-size:0.95rem;color:#888;text-align:center;">
-                  <span style="font-weight:600;color:#4fc3f7;">Hatırlatıcı Sistemi</span> | <span style="color:#888;">Tüm hakları saklıdır.</span><br>
-                  <span style="font-size:0.93rem;color:#aaa;">İletişim: info@kurumunuz.com</span>
+                <div style="margin-bottom:8px;">{build_html(get_tasks())}</div>
+                <div style="border-top:1px solid #e0e0e0;margin-top:12px;padding-top:8px;font-size:0.93rem;color:#888;text-align:center;">
+                  <span style="font-weight:600;color:#4fc3f7;">Hatırlatıcı Sistemi</span> | <span style="color:#888;">Tüm hakları saklıdır.</span>
                 </div>
               </div>
             </div>
