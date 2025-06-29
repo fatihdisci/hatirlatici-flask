@@ -253,20 +253,6 @@
     <div id="calendar"></div>
     <button class="btn-reset" onclick="resetFilter()">📂 Tüm Görevleri Göster</button>
 
-    <!-- Dilekçe Oluştur Butonu -->
-    <div style="text-align: center; margin-bottom: 1rem;">
-      <a href="{{ url_for('dilekce_olustur') }}"
-         style="display: inline-block;
-                background-color: #198754;
-                color: white;
-                padding: 10px 16px;
-                border-radius: 6px;
-                text-decoration: none;
-                font-weight: bold;">
-        📄 Dilekçe Oluştur
-      </a>
-    </div>
-
     <!-- Görev Ekle Formu -->
     <form action="/add" method="post">
       <input type="text" name="title" placeholder="Görev Başlığı" required>
@@ -306,6 +292,20 @@
         <p class="deadline">Son Tarih: {{ task.deadline }}</p>
       </div>
       {% endfor %}
+    </div>
+
+    <!-- Dilekçe Oluştur Butonu (En Alta Alındı) -->
+    <div style="text-align: center; margin: 2rem 0 0 0;">
+      <a href="{{ url_for('dilekce_olustur') }}"
+         style="display: inline-block;
+                background-color: #198754;
+                color: white;
+                padding: 10px 16px;
+                border-radius: 6px;
+                text-decoration: none;
+                font-weight: bold;">
+        📄 Dilekçe Oluştur
+      </a>
     </div>
   </div>
 
