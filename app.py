@@ -38,6 +38,7 @@ def send_scheduled_email(task, header):
     html = (
         f"<h2>{header}</h2>"
         f"<p><b>{task['title']}</b>: {task['desc']}</p>"
+        f"<p><b>Kategori:</b> {task.get('category','-').capitalize()}</p>"
         f"<p>Son Tarih: {task['deadline'].replace('T', ' ')}</p><hr>"
         f"{build_html(get_tasks())}"
     )
@@ -118,6 +119,7 @@ def add_task():
     send_email(
         "🆕 Yeni Görev Eklendi",
         f"<h2>Yeni Görev</h2><p><b>{title}</b>: {desc}</p>"
+        f"<p><b>Kategori:</b> {category.capitalize()}</p>"
         f"<p>Son Tarih: {deadline.replace('T',' ')}</p><hr>{build_html(tasks)}"
     )
     return redirect("/")
