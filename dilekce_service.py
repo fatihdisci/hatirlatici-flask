@@ -33,7 +33,7 @@ Ekte sunulan kaza tespit tutanağından da anlaşıldığı üzere mevcut kazaya
 Yapılan emsal fiyat araştırmaları sonrası, piyasa koşullarına göre belirlenen {bakiye_hasar} TL bakiye hasar tazminatının, tarafınızca müvekkilime ödenmesi gerekmektedir.
 
 SONUÇ VE İSTEM      :
-Yukarıda arz ve izah edildiği üzere; müvekkilin değer kaybı tutarının {deger_kaybi} TL, bakiye hasar tutarının {bakiye_hasar} TL olduğundan, prim aşımı da göz önüne alındığında toplam {toplam} TL tutarındaki zararın ödenmesine ve yargılama giderleri ile vekalet ücretinin davalıya yükletilmesine karar verilmesini saygıyla arz ve talep ederiz.
+Yukarıda arz ve izah edildiği üzere; {deger_kaybi} TL değer kaybı bedeli ile {bakiye_hasar} TL bakiye hasar tazminatının  (toplamda {toplam} TL) tarafımıza ödenmesi gerektiğini bildirir; aksi takdirde dava açılacağı, gecikme halinde ticari temerrüt faizi, mahkeme masrafları ve vekâlet ücretiyle sorumlu tutulacağınız hususlarını ihtar ederiz.
 
 BAŞVURAN VEKİLİ
 Av. Fatih DİŞÇİ
