@@ -243,6 +243,35 @@
       background: #7fffd4 !important;
       color: #181a20 !important;
     }
+    .category-badge {
+      display: inline-block;
+      font-size: 0.95rem;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-bottom: 4px;
+      margin-right: 4px;
+      font-weight: 600;
+    }
+    .category-sigorta {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+    .category-hukuk {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+    .category-ceza {
+      background: #ffebee;
+      color: #c62828;
+    }
+    .category-icra {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+    .category-diğer {
+      background: #fffde7;
+      color: #fbc02d;
+    }
   </style>
 </head>
 <body>
@@ -287,7 +316,7 @@
           <button type="submit">🗑️</button>
         </form>
         <h3>{{ task.title }}</h3>
-        <span style="display:inline-block;background:#222e2e;color:#7fffd4;font-size:0.95rem;padding:2px 10px;border-radius:12px;margin-bottom:4px;margin-right:4px;">{{ task.category|capitalize }}</span>
+        <span class="category-badge category-{{ task.category }}">{{ task.category|capitalize }}</span>
         <p>{{ task.desc }}</p>
         <p class="deadline">Son Tarih: {{ task.deadline }}</p>
       </div>

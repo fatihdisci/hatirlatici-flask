@@ -116,11 +116,41 @@ def checker_loop():
                 update_task(i, t)
 
         for header, task in to_mail:
-            html = (f"<h2>{header}: {task['title']}</h2>"
-                    f"<p><b>Kategori:</b> {task.get('category','-').capitalize()}</p>"
-                    f"<p>{task['desc']}</p>"
-                    f"<p>Son Tarih: {task['deadline'].replace('T',' ')}</p><hr>"
-                    f"{build_html(get_tasks())}")
+            # Kategoriye göre renkli rozet için stil belirle
+            category = task.get('category', '-').capitalize()
+            category_colors = {
+                'Sigorta':   '#4fc3f7',
+                'Hukuk':     '#81c784',
+                'Ceza':      '#ffb74d',
+                'İcra':      '#e57373',
+                'Diğer':     '#ba68c8',
+                '-':         '#b0bec5'
+            }
+            badge_color = category_colors.get(category, '#b0bec5')
+            category_badge = (f'<span style="display:inline-block;padding:2px 14px;border-radius:14px;'
+                              f'background:{badge_color};color:#222;font-weight:600;font-size:14px;letter-spacing:0.5px;box-shadow:0 1px 4px #0002;">'
+                              f'{category}</span>')
+            html = f'''
+            <div style="background:#23272f;padding:0;margin:0;font-family:Segoe UI,Arial,sans-serif;min-height:100vh;">
+              <div style="max-width:480px;margin:40px auto 0 auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px #0003;padding:32px 28px 18px 28px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+                  <img src="https://img.icons8.com/ios-filled/50/4fc3f7/task.png" width="38" height="38" style="border-radius:8px;box-shadow:0 1px 4px #0001;" alt="Görev Takip">
+                  <span style="font-size:1.5rem;font-weight:700;color:#23272f;letter-spacing:0.5px;">Görev Hatırlatma</span>
+                </div>
+                <h2 style="color:#23272f;font-size:1.2rem;margin:0 0 10px 0;">{header}: <span style="color:#4fc3f7;">{task['title']}</span></h2>
+                <div style="margin-bottom:12px;">{category_badge}</div>
+                <div style="background:#f6f8fa;border-radius:10px;padding:16px 14px 10px 14px;margin-bottom:18px;box-shadow:0 1px 4px #0001;">
+                  <div style="color:#23272f;font-size:1.05rem;margin-bottom:8px;"><b>Açıklama:</b> {task['desc']}</div>
+                  <div style="color:#23272f;font-size:1.05rem;"><b>Son Tarih:</b> {task['deadline'].replace('T',' ')}</div>
+                </div>
+                <div style="margin-bottom:10px;">{build_html(get_tasks())}</div>
+                <div style="border-top:1px solid #e0e0e0;margin-top:18px;padding-top:10px;font-size:0.95rem;color:#888;text-align:center;">
+                  <span style="font-weight:600;color:#4fc3f7;">Hatırlatıcı Sistemi</span> | <span style="color:#888;">Tüm hakları saklıdır.</span><br>
+                  <span style="font-size:0.93rem;color:#aaa;">İletişim: info@kurumunuz.com</span>
+                </div>
+              </div>
+            </div>
+            '''
             send_email("Görev Hatırlatma", html)   # eski kullanım değişmedi
 
         time.sleep(60)
