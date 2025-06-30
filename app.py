@@ -153,10 +153,9 @@ def dilekce_olustur():
                   'Bakiye Hasar (₺)','Toplam (₺)','email']
         data = { fld: request.form[fld] for fld in fields }
 
-        # Dosya adında Türkçe karakterleri ve özel karakterleri temizle
-        import re
-        safe_name = re.sub(r'[^a-zA-Z0-9_]', '', data['Ad Soyad'].replace(' ', '_'))
-        output_file = f"tmp/{safe_name}_basvuru.docx"
+        # Dosya adında Türkçe karakterleri ve özel karakterleri temizlemeden, büyük harf ve Türkçe karakterlerle dosya adı oluştur
+        safe_name = f"{data['Ad Soyad'].upper()} BAŞVURU DİLEKÇESİ"
+        output_file = f"tmp/{safe_name}.docx"
         create_insurance_docx(data, output_file)
 
         send_email(
