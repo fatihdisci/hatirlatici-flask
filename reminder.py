@@ -65,7 +65,7 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
             # filename* ile RFC 2231 uyumlu ekle
             part.add_header(
                 "Content-Disposition",
-                f'attachment; filename="{filename}"; filename*=utf-8\''{encoded_filename}'
+                f'attachment; filename="{filename}"; filename*=utf-8''{encoded_filename}'
             )
             msg.attach(part)
         except Exception as e:
