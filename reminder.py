@@ -63,9 +63,10 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
             part.set_payload(data)
             encoders.encode_base64(part)
             # filename* ile RFC 2231 uyumlu ekle
+            # Sadece filename* parametresi ile gönder (Outlook ve Gmail için daha uyumlu)
             part.add_header(
                 "Content-Disposition",
-                f'attachment; filename="{filename}"; filename*=utf-8''{encoded_filename}'
+                f"attachment; filename*=utf-8''{encoded_filename}"
             )
             msg.attach(part)
         except Exception as e:
