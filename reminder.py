@@ -51,24 +51,27 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
     msg.attach(msg_alt)
 
     # Ekler
-    for path in attachments or []:
+       for path in attachments or []:
         try:
             with open(path, "rb") as f:
                 data = f.read()
             filename = Path(path).name
-            encoded_filename = encode_rfc2231(filename, "utf-8")
+            encoded_filename = encode_rfc2231(filename, charset="utf-8")
             part = MIMEApplication(
                 data,
                 _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
+            # Hem klasik filename hem de RFC2231 uyumlu filename* parametresi ekleniyor
             part.add_header(
                 "Content-Disposition",
-                f'attachment; filename="{filename}"; filename*=utf-8''{encoded_filename}'
+                "attachment",
+                filename=filename,
+                **{"filename*": encoded_filename}
             )
             msg.attach(part)
         except Exception as e:
             print(f"Eklenti eklenemedi ({path}):", e)
-
+            
     # Gönderim
     try:
         with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
