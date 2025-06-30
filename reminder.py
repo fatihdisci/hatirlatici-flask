@@ -60,11 +60,11 @@ for path in attachments or []:
             data,
             _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
+         # Hem filename hem filename* ile gönder
         part.add_header(
             "Content-Disposition",
-            "attachment",
-            filename=filename
-        )
+            f"attachment; filename=\"{filename}\"; filename*=utf-8''{encoded_filename}"
+        )        
         msg.attach(part)
     except Exception as e:
         print(f"Eklenti eklenemedi ({path}):", e)
