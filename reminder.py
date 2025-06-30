@@ -8,6 +8,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 from pathlib import Path
+from email.utils import encode_rfc2231
+from email.mime.application import MIMEApplication
 
 from storage import get_tasks, update_task
 
@@ -48,26 +50,24 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
     msg_alt.attach(MIMEText(html_body, "html", "utf-8"))
     msg.attach(msg_alt)
 
-    # ekler
-for path in attachments or []:
-    try:
-        with open(path, "rb") as f:
-            data = f.read()
-        filename = Path(path).name
-
-        # MIMEApplication, .docx gibi ikili ekler için doğru sınıf
-        part = MIMEApplication(
-            data,
-            _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
-         # Hem filename hem filename* ile gönder
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename=\"{filename}\"; filename*=utf-8''{encoded_filename}"
-        )        
-        msg.attach(part)
-    except Exception as e:
-        print(f"Eklenti eklenemedi ({path}):", e)
+    # Ekler
+    for path in attachments or []:
+        try:
+            with open(path, "rb") as f:
+                data = f.read()
+            filename = Path(path).name
+            encoded_filename = encode_rfc2231(filename, "utf-8")
+            part = MIMEApplication(
+                data,
+                _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+            part.add_header(
+                "Content-Disposition",
+                f'attachment; filename="{filename}"; filename*=utf-8''{encoded_filename}'
+            )
+            msg.attach(part)
+        except Exception as e:
+            print(f"Eklenti eklenemedi ({path}):", e)
 
     # Gönderim
     try:
