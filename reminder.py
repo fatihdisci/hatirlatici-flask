@@ -54,16 +54,19 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
             with open(path, "rb") as f:
                 data = f.read()
             filename = Path(path).name
-            # Dosya uzantısı .docx ise doğru MIME tipi ile ekle
+            from email.utils import encode_rfc2231
+            encoded_filename = encode_rfc2231(filename, 'utf-8')
             if str(Path(path).suffix).lower() == ".docx":
                 part = MIMEBase("application", "vnd.openxmlformats-officedocument.wordprocessingml.document")
             else:
                 part = MIMEBase("application", "octet-stream")
             part.set_payload(data)
             encoders.encode_base64(part)
-            # Dosya adını Content-Disposition'da UTF-8 olarak belirt
-            part.add_header("Content-Disposition",
-                            f'attachment; filename="{filename}"; filename*=UTF-8\'\'{filename}')
+            # filename* ile RFC 2231 uyumlu ekle
+            part.add_header(
+                "Content-Disposition",
+                f'attachment; filename="{filename}"; filename*=utf-8\''{encoded_filename}'
+            )
             msg.attach(part)
         except Exception as e:
             print(f"Eklenti eklenemedi ({path}):", e)
