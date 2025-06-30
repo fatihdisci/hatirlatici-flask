@@ -53,6 +53,7 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
         try:
             with open(path, "rb") as f:
                 data = f.read()
+            filename = Path(path).name
             # Dosya uzantısı .docx ise doğru MIME tipi ile ekle
             if str(Path(path).suffix).lower() == ".docx":
                 part = MIMEBase("application", "vnd.openxmlformats-officedocument.wordprocessingml.document")
@@ -60,8 +61,9 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
                 part = MIMEBase("application", "octet-stream")
             part.set_payload(data)
             encoders.encode_base64(part)
+            # Dosya adını Content-Disposition'da UTF-8 olarak belirt
             part.add_header("Content-Disposition",
-                            f'attachment; filename="{Path(path).name}"')
+                            f'attachment; filename="{filename}"; filename*=UTF-8\'\'{filename}')
             msg.attach(part)
         except Exception as e:
             print(f"Eklenti eklenemedi ({path}):", e)
