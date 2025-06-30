@@ -48,29 +48,26 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
     msg_alt.attach(MIMEText(html_body, "html", "utf-8"))
     msg.attach(msg_alt)
 
-    # Ekler
-    for path in attachments or []:
-        try:
-            with open(path, "rb") as f:
-                data = f.read()
-            filename = Path(path).name
-            from email.utils import encode_rfc2231
-            encoded_filename = encode_rfc2231(filename, 'utf-8')
-            if str(Path(path).suffix).lower() == ".docx":
-                part = MIMEBase("application", "vnd.openxmlformats-officedocument.wordprocessingml.document")
-            else:
-                part = MIMEBase("application", "octet-stream")
-            part.set_payload(data)
-            encoders.encode_base64(part)
-            # filename* ile RFC 2231 uyumlu ekle
-            # Sadece filename* parametresi ile gönder (Outlook ve Gmail için daha uyumlu)
-            part.add_header(
-                "Content-Disposition",
-                f"attachment; filename*=utf-8''{encoded_filename}"
-            )
-            msg.attach(part)
-        except Exception as e:
-            print(f"Eklenti eklenemedi ({path}):", e)
+    # ekler
+for path in attachments or []:
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        filename = Path(path).name
+
+        # MIMEApplication, .docx gibi ikili ekler için doğru sınıf
+        part = MIMEApplication(
+            data,
+            _subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+        part.add_header(
+            "Content-Disposition",
+            "attachment",
+            filename=filename
+        )
+        msg.attach(part)
+    except Exception as e:
+        print(f"Eklenti eklenemedi ({path}):", e)
 
     # Gönderim
     try:
