@@ -51,7 +51,7 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
     msg.attach(msg_alt)
 
     # Ekler
-       for path in attachments or []:
+    for path in attachments or []:
         try:
             with open(path, "rb") as f:
                 data = f.read()
@@ -71,7 +71,7 @@ def send_email(subject, html_body, *, attachments=None, to_override=None):
             msg.attach(part)
         except Exception as e:
             print(f"Eklenti eklenemedi ({path}):", e)
-            
+
     # Gönderim
     try:
         with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT) as smtp:
